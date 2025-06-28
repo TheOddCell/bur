@@ -1,0 +1,6 @@
+version=2.0.0
+description=Simple stratum with just busybox and a few config files
+files=idlebox
+url=https://github.com/TheOddCell/idlebox/
+maintainer=TheOddCell
+readmepls=please read the setup instructions at https://github.com/TheOddCell/idlebox/blob/main/README.md
