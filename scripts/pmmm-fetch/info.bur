@@ -1,0 +1,7 @@
+version=1.0.0
+description=Transparently run brl fetch
+files=pmmm-fetch
+url=/dev/null
+maintainer=TheOddCell
+readmepls=
+licence=The Unlicence
