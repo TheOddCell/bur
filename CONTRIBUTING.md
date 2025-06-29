@@ -41,3 +41,5 @@ licence=The Unlicence
 Any files not listed in `files` will be uncopied, but still usable depending on the helper.
 
 For `pmmm`, it will be placed in `[pmmm strata]/usr/bur/[type]/[name]`
+
+If you do not want to fill in the field, it must be empty but not gone.
