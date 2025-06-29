@@ -1,0 +1,2 @@
+#!/bedrock/libexec/busybox sh
+exec /bedrock/libexec/brl-fetch "$@"
