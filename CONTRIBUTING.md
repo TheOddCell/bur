@@ -43,4 +43,4 @@ Any files not listed in `files` will be uncopied, but still usable depending on 
 For `pmmm`, it will be placed in `[pmmm strata]/usr/bur/[type]/[name]`
 
 If you do not want to fill in the field, it must be set to `"/dev/null"` but not gone.
-I am not joking. This is with the exception of `readmepls`, where it can be empty.
+I am not joking. This is with the exception of `readmepls`, where it can be empty. It must still be there, just with nothing after the `=` sign.
