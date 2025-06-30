@@ -1,0 +1,7 @@
+version=1.0.0
+description=Fetch an git repo into an strata
+files=pmmm-gitfetch
+url=/dev/null
+maintainer=TheOddCell
+readmepls=See "pmmm gitfetch --help" for help!
+licence=The Unlicence

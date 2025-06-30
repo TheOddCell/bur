@@ -1,0 +1,62 @@
+#!/bedrock/libexec/busybox sh
+. /bedrock/share/common-code
+trap - EXIT
+trap "echo 'an unexpected error occurred, please see pmmm gitfetch --help';exit 1" ERR
+set -e
+
+# Check if running as root
+require_root() {
+  if [ "$(id -u)" != 0 ]; then
+    echo "This command requires root privileges."
+    exit 1
+  fi
+}
+
+name="${1:-}"
+shift||true
+repo="${1:-}"
+shift||true
+
+if [ "$name" = "--help" ];then
+  if [ -z "$repo" ]; then
+    echo "PMMM Gitfetch Plugin"
+  fi
+  echo "Fetch a stratum from a git repo of its basic userland."
+  echo "Usage: [name of new strata] [location of git repo]"
+  echo "Example for sta.li:"
+  echo "# pmm gitfetch stali http://git.sta.li/rootfs-x86_64"
+else
+  if [ ! -z "$repo" ]; then
+    require_root
+    step_init 0
+    target_directory="/bedrock/strata/${name}"
+    step "Creating install location at ${target_directory}"
+    mkdir "${target_directory}"
+    step "Cloning repo to directory"
+    git clone "${repo}" -c "${target_directory}"
+    step "Removing unnecicary items"
+    rm -rf "${target_directory}/boot" \
+       "${target_directory}/root" \
+       "${target_directory}/home" \
+       "${target_directory}/etc/fstab" \
+       "${target_directory}/etc/machine-id" \
+       "${target_directory}/etc/hostname" \
+       "${target_directory}/etc/hosts" \
+       "${target_directory}/etc/resolv.conf" \
+       "${target_directory}/etc/shadow" \
+       "${target_directory}/etc/passwd" \
+       "${target_directory}/etc/group" \
+       "${target_directory}/etc/gshadow" \
+       "${target_directory}/etc/sudoers" \
+       "${target_directory}/etc/sudoers.d" \
+       "${target_directory}/etc/ssh/ssh_host_"* \
+       "${target_directory}/etc/udev/rules.d"
+    step "Showing"
+    brl show "${name}"
+    step "Enabling"
+    brl enable "${name}"
+  else
+    echo "Incomplete command, displaing info."
+    pmmm-gitfetch --help foobar123
+  fi
+fi
