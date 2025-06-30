@@ -1,0 +1,7 @@
+version=git
+description=Official BUR Helper
+files=idlebox
+url=https://github.com/TheOddCell/pmmm/
+maintainer=TheOddCell
+readmepls=
+licence=unlicence

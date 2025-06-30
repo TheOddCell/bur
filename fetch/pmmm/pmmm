@@ -1,0 +1,71 @@
+#!/bedrock/libexec/busybox sh
+#
+# Package Manager Manager Manager Installer
+#
+#      This is free and unencumbered software released into the public domain.
+#      Anyone is free to copy, modify, publish, use, compile, sell, or
+#      distribute this software, either in source code form or as a compiled
+#      binary, for any purpose, commercial or non-commercial, and by any means.
+#
+#      For more information, please refer to <https://unlicense.org/>
+#
+# Copyleft (ↄ) The Odd Cell <me@oddcell.ca>
+#
+
+# shellcheck source=src/slash-bedrock/libexec/brl-fetch
+. /bedrock/share/common-code
+trap 'fetch_abort "Unexpected error occurred."' EXIT
+trap 'exit' ERR
+
+check_supported() {
+	true
+}
+
+list_mirrors() {
+	echo "https://github.com/TheOddCell/pmmm.git/"
+}
+
+speed_test_url() {
+	echo "info/refs"
+}
+
+list_architectures() {
+    /bedrock/libexec/busybox uname -m
+}
+
+default_release() {
+	echo "git"
+}
+
+list_releases() {
+	echo "git"
+}
+
+brl_arch_to_distro() {
+	echo "$1"
+}
+
+fetch() {
+    step "Checking for git"
+    command -v git >/dev/null 2>&1 || false
+
+    step "Creating temporary clone directory"
+    tmp_clone_dir="${bootstrap_dir}/tmp_git_clone"
+    mkdir -p "${tmp_clone_dir}"
+
+    step "Fetching pmmm to a temporary directory"
+    git clone "${target_mirror}" "${tmp_clone_dir}"
+
+    step "Moving fetched rootfs to target directory"
+    (
+        cd "$tmp_clone_dir" || false
+        for f in * .[^.]* ..?*; do
+            [ -e "$f" ] || continue
+            mv "$f" "$target_dir/" || false
+        done
+    )
+    step "Ensuring pmmm is executable"
+    chmod a+x "${target_dir}/bin/pmmm"
+    step "Updating pmmm"
+    (cd "${target_dir}" && "${target_dir}/bin/pmmm" update foobar)
+}
