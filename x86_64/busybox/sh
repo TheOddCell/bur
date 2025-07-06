@@ -1,2 +1,2 @@
 #!/bedrock/libexec/busybox sh
-/bin/busybox sh "$*"
+/bin/busybox sh "$@"
