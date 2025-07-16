@@ -1,0 +1,70 @@
+#!/bedrock/libexec/busybox sh
+#
+# static linux bootstrap support
+#
+#      This is free and unencumbered software released into the public domain.
+#      Anyone is free to copy, modify, publish, use, compile, sell, or
+#      distribute this software, either in source code form or as a compiled
+#      binary, for any purpose, commercial or non-commercial, and by any means.
+#
+#      For more information, please refer to <https://unlicense.org/>
+#
+# Copyleft (ↄ) The Odd Cell <me@oddcell.ca>
+#
+
+# shellcheck source=src/slash-bedrock/libexec/brl-fetch
+. /bedrock/share/common-code
+trap 'fetch_abort "Unexpected error occurred."' EXIT
+
+check_supported() {
+	false
+}
+
+speed_test_url() {
+	echo "rootfs-x86_64.git/info/refs"
+}
+
+list_mirrors() {
+	cat <<EOF
+https://git.sta.li/
+EOF
+}
+
+list_architectures() {
+	cat <<EOF
+x86_64
+EOF
+}
+
+default_release() {
+	echo "git"
+}
+
+list_releases() {
+	cat <<EOF
+git
+EOF
+}
+
+brl_arch_to_distro() {
+	case "$1" in
+	"x86_64") echo "x86_64" ;;
+	*) abort "Unsupported architecture: $1" ;;
+	esac
+}
+
+fetch() {
+	export GIT_EXEC_PATH="${bootstrap_dir}/rootfs-x86_64-master/libexec/git-core"
+	export PATH="${bootstrap_dir}/rootfs-x86_64-master/bin:$PATH"
+  tmp_clone_dir="${bootstrap_dir}/tmp_git_clone"
+  mkdir -p "${tmp_clone_dir}"
+  step "Fetching rootfs (for bootstrapping)"
+  rootfs_url="https://gitlab.com/garbeam/rootfs-x86_64/-/archive/master/rootfs-x86_64-master.tar.gz"
+  download "${rootfs_url}" "${bootstrap_dir}/rootfs.tar.gz"
+  step "Extracting bootstrapping copy of stali"
+  /bedrock/libexec/busybox tar -xzf "${bootstrap_dir}/rootfs.tar.gz" -C "${bootstrap_dir}"
+  step "Fetching rootfs in temporary directory"
+  "${bootstrap_dir}/rootfs-x86_64-master/bin/git" clone http://git.sta.li/rootfs-x86_64 "${tmp_clone_dir}"
+  step "Moving fetched rootfs to target directory"
+  mv "${tmp_clone_dir}/"* "${tmp_clone_dir}/".* "${target_dir}/" 2>/dev/null || true
+}
