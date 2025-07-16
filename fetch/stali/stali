@@ -70,6 +70,6 @@ fetch() {
   step "Making /root and /home and removing unneeded folders"
   trap '' ERR
   trap '' EXIT
-  unlink "${target_dir}/root" "${target_dir}/usr" "${target_dir}/var"
+  /bedrock/libexec/busybox unlink "${target_dir}/root" "${target_dir}/usr" "${target_dir}/var"
   mkdir -p "${target_dir}/root" "${target_dir}/home"
 }
