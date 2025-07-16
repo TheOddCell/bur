@@ -64,7 +64,7 @@ fetch() {
   step "Extracting bootstrapping copy of stali"
   /bedrock/libexec/busybox tar -xzf "${bootstrap_dir}/rootfs.tar.gz" -C "${bootstrap_dir}"
   step "Fetching rootfs in temporary directory"
-  "${bootstrap_dir}/rootfs-x86_64-master/bin/git" clone http://git.sta.li/rootfs-x86_64 "${tmp_clone_dir}"
+  "${bootstrap_dir}/rootfs-x86_64-master/bin/git" clone https://gitlab.com/garbeam/rootfs-x86_64 "${tmp_clone_dir}"
   step "Moving fetched rootfs to target directory"
   mv "${tmp_clone_dir}/"* "${tmp_clone_dir}/".* "${target_dir}/" 2>/dev/null || true
 }
