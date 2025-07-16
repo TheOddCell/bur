@@ -68,8 +68,9 @@ fetch() {
   step "Moving fetched rootfs to target directory"
   mv "${tmp_clone_dir}/"* "${tmp_clone_dir}/".* "${target_dir}/" 2>/dev/null || true
   step "Making /root and /home and removing unneeded folders"
-  trap - ERR
   set +e
   /bedrock/libexec/busybox unlink "${target_dir}/root" "${target_dir}/usr" "${target_dir}/var"
-  mkdir -p "${target_dir}/root" "${target_dir}/home"
+  set -e
+  
+  mkdir "${target_dir}/root" "${target_dir}/home"
 }
