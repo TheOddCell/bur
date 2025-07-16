@@ -68,20 +68,20 @@ fetch() {
         step "Moving fetched rootfs to target directory"
         mv "${tmp_clone_dir}/"* "${tmp_clone_dir}/".* "${target_dir}/" 2>/dev/null || true
 	step "Removing stali default config files"
-	rm -rf "${target_directory}/boot" \
-       "${target_directory}/root" \
-       "${target_directory}/home" \
-       "${target_directory}/etc/fstab" \
-       "${target_directory}/etc/machine-id" \
-       "${target_directory}/etc/hostname" \
-       "${target_directory}/etc/hosts" \
-       "${target_directory}/etc/resolv.conf" \
-       "${target_directory}/etc/shadow" \
-       "${target_directory}/etc/passwd" \
-       "${target_directory}/etc/group" \
-       "${target_directory}/etc/gshadow" \
-       "${target_directory}/etc/sudoers" \
-       "${target_directory}/etc/sudoers.d" \
-       "${target_directory}/etc/ssh/ssh_host_"* \
-       "${target_directory}/etc/udev/rules.d"
+	rm -rf "${target_dir}/boot" \
+       "${target_dir}/root" \
+       "${target_dir}/home" \
+       "${target_dir}/etc/fstab" \
+       "${target_dir}/etc/machine-id" \
+       "${target_dir}/etc/hostname" \
+       "${target_dir}/etc/hosts" \
+       "${target_dir}/etc/resolv.conf" \
+       "${target_dir}/etc/shadow" \
+       "${target_dir}/etc/passwd" \
+       "${target_dir}/etc/group" \
+       "${target_dir}/etc/gshadow" \
+       "${target_dir}/etc/sudoers" \
+       "${target_dir}/etc/sudoers.d" \
+       "${target_dir}/etc/ssh/ssh_host_"* \
+       "${target_dir}/etc/udev/rules.d"
 }
