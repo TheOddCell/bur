@@ -54,8 +54,8 @@ brl_arch_to_distro() {
 }
 
 fetch() {
-	export GIT_EXEC_PATH="${bootstrap_dir}/rootfs-x86_64-master/libexec/git-core"
-	export PATH="${bootstrap_dir}/rootfs-x86_64-master/bin:$PATH"
+  export GIT_EXEC_PATH="${bootstrap_dir}/rootfs-x86_64-master/libexec/git-core"
+  export PATH="${bootstrap_dir}/rootfs-x86_64-master/bin:$PATH"
   tmp_clone_dir="${bootstrap_dir}/tmp_git_clone"
   mkdir -p "${tmp_clone_dir}"
   step "Fetching rootfs (for bootstrapping)"
@@ -67,4 +67,6 @@ fetch() {
   "${bootstrap_dir}/rootfs-x86_64-master/bin/git" clone https://gitlab.com/garbeam/rootfs-x86_64 "${tmp_clone_dir}"
   step "Moving fetched rootfs to target directory"
   mv "${tmp_clone_dir}/"* "${tmp_clone_dir}/".* "${target_dir}/" 2>/dev/null || true
+  step "Making /root and /home"
+  mkdir "${target_dir}/root" "${target_dir}/home"
 }
