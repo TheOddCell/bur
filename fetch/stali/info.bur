@@ -1,0 +1,7 @@
+version=git
+description=Stali Fetch script
+files=stali
+url=https://sta.li/
+maintainer=TheOddCell
+readmepls=please read the setup instructions at https://github.com/TheOddCell/idlebox/blob/main/README.md
+licence=unlicence
