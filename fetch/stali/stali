@@ -54,23 +54,34 @@ brl_arch_to_distro() {
 }
 
 fetch() {
-  export GIT_EXEC_PATH="${bootstrap_dir}/rootfs-x86_64-master/libexec/git-core"
-  export PATH="${bootstrap_dir}/rootfs-x86_64-master/bin:$PATH"
-  tmp_clone_dir="${bootstrap_dir}/tmp_git_clone"
-  mkdir -p "${tmp_clone_dir}"
-  step "Fetching rootfs (for bootstrapping)"
-  rootfs_url="https://gitlab.com/garbeam/rootfs-x86_64/-/archive/master/rootfs-x86_64-master.tar.gz"
-  download "${rootfs_url}" "${bootstrap_dir}/rootfs.tar.gz"
-  step "Extracting bootstrapping copy of stali"
-  /bedrock/libexec/busybox tar -xzf "${bootstrap_dir}/rootfs.tar.gz" -C "${bootstrap_dir}"
-  step "Fetching rootfs in temporary directory"
-  "${bootstrap_dir}/rootfs-x86_64-master/bin/git" clone https://gitlab.com/garbeam/rootfs-x86_64 "${tmp_clone_dir}"
-  step "Moving fetched rootfs to target directory"
-  mv "${tmp_clone_dir}/"* "${tmp_clone_dir}/".* "${target_dir}/" 2>/dev/null || true
-  step "Making /root and /home and removing unneeded folders"
-  set +e
-  /bedrock/libexec/busybox unlink "${target_dir}/root" "${target_dir}/usr" "${target_dir}/var"
-  set -e
-  
-  mkdir "${target_dir}/root" "${target_dir}/home"
+	export GIT_EXEC_PATH="${bootstrap_dir}/rootfs-x86_64-master/libexec/git-core"
+	export PATH="${bootstrap_dir}/rootfs-x86_64-master/bin:$PATH"
+        tmp_clone_dir="${bootstrap_dir}/tmp_git_clone"
+        mkdir -p "${tmp_clone_dir}"
+        step "Fetching rootfs (for bootstrapping)"
+        rootfs_url="https://gitlab.com/garbeam/rootfs-x86_64/-/archive/master/rootfs-x86_64-master.tar.gz"
+        download "${rootfs_url}" "${bootstrap_dir}/rootfs.tar.gz"
+        step "Extracting stali (for bootstrapping)"
+        /bedrock/libexec/busybox tar -xzf "${bootstrap_dir}/rootfs.tar.gz" -C "${bootstrap_dir}"
+        step "Fetching rootfs (with git, for use) in temporary directory"
+        "${bootstrap_dir}/rootfs-x86_64-master/bin/git" clone https://gitlab.com/garbeam/rootfs-x86_64 "${tmp_clone_dir}"
+        step "Moving fetched rootfs to target directory"
+        mv "${tmp_clone_dir}/"* "${tmp_clone_dir}/".* "${target_dir}/" 2>/dev/null || true
+	step "Removing stali default config files"
+	rm -rf "${target_directory}/boot" \
+       "${target_directory}/root" \
+       "${target_directory}/home" \
+       "${target_directory}/etc/fstab" \
+       "${target_directory}/etc/machine-id" \
+       "${target_directory}/etc/hostname" \
+       "${target_directory}/etc/hosts" \
+       "${target_directory}/etc/resolv.conf" \
+       "${target_directory}/etc/shadow" \
+       "${target_directory}/etc/passwd" \
+       "${target_directory}/etc/group" \
+       "${target_directory}/etc/gshadow" \
+       "${target_directory}/etc/sudoers" \
+       "${target_directory}/etc/sudoers.d" \
+       "${target_directory}/etc/ssh/ssh_host_"* \
+       "${target_directory}/etc/udev/rules.d"
 }
